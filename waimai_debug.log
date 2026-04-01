@@ -1,0 +1,17 @@
+2026-04-01T19:31:29.279Z script start
+2026-04-01T19:31:29.280Z accessibility ready
+2026-04-01T19:31:29.280Z restart target app, pkg=com.waimaiii.waimaiii
+2026-04-01T19:31:29.397Z force-stop code=0
+2026-04-01T19:31:33.316Z current activity=com.waimaiii.waimaiii/.MainActivity
+2026-04-01T19:31:33.339Z round=1, added=0, total=0
+2026-04-01T19:31:35.060Z round=2, added=0, total=0
+2026-04-01T19:31:36.956Z round=3, added=0, total=0
+2026-04-01T19:31:40.313Z round=4, added=0, total=0
+2026-04-01T19:31:42.131Z round=5, added=0, total=0
+2026-04-01T19:31:43.995Z round=6, added=0, total=2
+2026-04-01T19:31:45.797Z round=7, added=0, total=5
+2026-04-01T19:31:47.590Z round=8, added=0, total=6
+2026-04-01T19:31:49.388Z round=9, added=0, total=8
+2026-04-01T19:31:51.183Z round=10, added=0, total=10
+2026-04-01T19:31:51.184Z reach max rounds=10
+2026-04-01T19:31:51.186Z save done, count=10, file=/sdcard/waimai_data.json
