@@ -1,1 +1,0 @@
-# waimai-desc-collector
