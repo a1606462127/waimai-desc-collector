@@ -6,8 +6,8 @@
 const TARGET_PKG = "com.waimaiii.waimaiii";
 const TARGET_ACTIVITY = "com.waimaiii.waimaiii.MainActivity";
 const TARGET_ACTIVITY_SHORT = "com.waimaiii.waimaiii/.MainActivity";
-const OUTPUT_PATH = "/sdcard/waimai_data.json";
-const DEBUG_LOG_PATH = "/sdcard/waimai_debug.log";
+const OUTPUT_PATH = "/sdcard/autojs6/waimai/waimai_desc_dump.json";
+const DEBUG_LOG_PATH = "/sdcard/autojs6/waimai/waimai_debug.log";
 const KEYWORDS = ["实付满", "最高返"];
 const EXCLUDED_KEYWORDS = ["含红包¥2"];
 
@@ -30,10 +30,11 @@ function main() {
 
         const seen = {};
         const resultList = [];
+        const rawDump = [];
 
         for (let round = 1; round <= MAX_ROUNDS; round++) {
             // 1) 采集当前页
-            const added = collectCurrentPageDesc(seen, resultList);
+            const added = collectCurrentPageDesc(seen, resultList, rawDump);
             log("第 " + round + " 轮：新增 desc = " + added + "，累计 = " + resultList.length);
             debug("round=" + round + ", added=" + added + ", total=" + resultList.length);
 
@@ -55,7 +56,8 @@ function main() {
 
         // 5) 保存结果
         saveAsJson(resultList, OUTPUT_PATH);
-        debug("save done, count=" + resultList.length + ", file=" + OUTPUT_PATH);
+        saveAsJson(rawDump, "/sdcard/autojs6/waimai/waimai_raw_desc.json");
+        debug("save done, count=" + resultList.length + ", file=" + OUTPUT_PATH + ", raw=" + "/sdcard/autojs6/waimai/waimai_raw_desc.json");
 
         toast("采集完成，共 " + resultList.length + " 条，已保存到 " + OUTPUT_PATH);
         log("采集完成，共 " + resultList.length + " 条，已保存到 " + OUTPUT_PATH);
@@ -129,10 +131,10 @@ function waitForPackageFront(pkg, timeoutMs) {
 }
 
 /**
- * 采集当前页面中 className=android.view.View 且 desc 非空
+ * 采集当前页面中 className=android.view.View 的 desc
  * @returns {number} 本次新增条数
  */
-function collectCurrentPageDesc(seen, resultList) {
+function collectCurrentPageDesc(seen, resultList, rawDump) {
     let added = 0;
     const nodes = className("android.view.View").find();
 
@@ -146,6 +148,7 @@ function collectCurrentPageDesc(seen, resultList) {
             const d = node.desc();
             if (d && String(d).trim().length > 0) {
                 const text = String(d).trim();
+                rawDump.push(text);
                 if (containsTargetKeyword(text) && !seen[text]) {
                     seen[text] = true;
                     resultList.push(text);
@@ -187,8 +190,7 @@ function saveAsJson(arr, path) {
     }
 }
 
-function debug(msg) {
-    const line = new Date().toISOString() + " " + String(msg) + "\n";
+function debug(msg) {    const line = new Date().toISOString() + " " + String(msg) + "\n";
     try {
         files.append(DEBUG_LOG_PATH, line);
     } catch (e) {
